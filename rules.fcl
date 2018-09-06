@@ -111,10 +111,9 @@ RULEBLOCK headcheRules
 	ACT : MIN;
 	ACCU : MAX;
 	
-	RULE 1 : IF age IS young AND intensity IS moderateToStrong AND duration IS from4To72 AND pulsating IS always AND pressing IS rarely
-	AND nauseaVomiting IS always AND noiseLight IS often AND heating IS sometimes AND monthlyHeadches IS max15 
-	AND headPart IS oneSide AND worsenHeadches IS physicalActivity THEN headcheType IS migraine;
-		
+	RULE 1 : IF age IS young AND intensity IS moderateToStrong AND duration IS from4To72 AND pulsating IS always AND pressing IS rarely AND nauseaVomiting IS always
+	AND noiseLight IS always OR noiseLight IS often AND heating IS sometimes AND monthlyHeadches IS max15 AND headPart IS oneSide AND worsenHeadches IS physicalActivity THEN headcheType IS migraine;
+	
 	RULE 2 : IF age IS medium AND intensity IS mildToModerate AND duration IS from30mTo7d AND pulsating IS rarely OR pulsating IS sometimes OR pressing IS often
 	AND nauseaVomiting IS rarely AND noiseLight IS rarely AND heating IS sometimes AND monthlyHeadches IS max15 AND headPart IS bothSides OR headPart IS forehead
 	AND worsenHeadches IS stressEffort OR worsenHeadches IS none THEN headcheType IS tension;
