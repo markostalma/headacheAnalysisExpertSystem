@@ -1,0 +1,90 @@
+FUNCTION_BLOCK headcheAnalysis
+
+VAR_INPUT
+	gender : REAL;
+	intensity : REAL;
+	duration : REAL;
+END_VAR
+
+VAR_OUTPUT
+	migraine : REAL;
+	tension : REAL;
+	claster : REAL;
+END_VAR
+
+FUZZIFY gender
+	TERM male := 0;
+	TERM female := 1;
+END_FUZZIFY
+
+FUZZIFY intensity
+	TERM moderateToStrong := (0,2)(2,6.5);
+	TERM mildToModerate := (0,0)(0,3.5);
+	TERM strong := (0,5.5)(10,0);
+END_FUZZIFY
+
+FUZZIFY duration
+	TERM from4To72 := (0,0.16)(1,1.5)(0,3);
+	TERM from30mTo7d := (0,0.3)(0,7)(8,1);
+	TERM from30mTo90m := (7,0)(8,1)(9,1);
+END_FUZZIFY
+
+DEFUZZIFY migraine
+	TERM male := (0,1)(7.5,0);
+	TERM moderateToStrong := (7.5,0)(12,1)(15,0);
+	TERM from4To72 := SIGM 1.5 18;
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY tension
+	TERM male := (0,1)(7.5,0);
+	TERM mildToModerate := (7.5,0)(12,1)(15,0);
+	TERM from30mTo7d := SIGM 1.5 18;
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+DEFUZZIFY claster
+	TERM female := (0,1)(7.5,0);
+	TERM strong := (7.5,0)(12,1)(15,0);
+	TERM from30mTo90m := SIGM 1.5 18;
+	METHOD : COG;
+	DEFAULT := 0;
+END_DEFUZZIFY
+
+RULEBLOCK migraineRules
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+	
+	RULE 1 : IF gender IS male AND intensity IS moderateToStrong OR duration IS from4To72 THEN migraine IS nikakva;
+	RULE 2 : IF gender IS female THEN napojnica IS srednja;
+	RULE 3 : IF gender IS odlicna AND ambijent IS neprijatan THEN napojnica IS srednja;	
+	
+END_RULEBLOCK
+
+RULEBLOCK tensionRules
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+	
+	RULE 1 : IF gender IS male AND intensity IS moderateToStrong OR duration IS from4To72 THEN napojnica IS nikakva;
+	RULE 2 : IF gender IS female THEN napojnica IS srednja;
+	RULE 3 : IF gender IS odlicna AND ambijent IS neprijatan THEN napojnica IS srednja;	
+	
+END_RULEBLOCK
+
+RULEBLOCK clasterRules
+	AND : MIN;
+	ACT : MIN;
+	ACCU : MAX;
+	
+	RULE 1 : IF gender IS male AND intensity IS moderateToStrong OR duration IS from4To72 THEN napojnica IS nikakva;
+	RULE 2 : IF gender IS female THEN napojnica IS srednja;
+	RULE 3 : IF gender IS odlicna AND ambijent IS neprijatan THEN napojnica IS srednja;	
+	
+END_RULEBLOCK
+
+
+END_FUNCTION_BLOCK
