@@ -1,5 +1,5 @@
-# headcheAnalysisExpertSystem
+# headacheAnalysisExpertSystem
 
-Headche Analysis Expert System using Fuzzy Logic
+Headache Analysis Expert System using Fuzzy Logic
 
 #jFuzzyLogic Library
